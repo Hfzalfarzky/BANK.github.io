@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/MarkerCluster.css">
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>BANK NAGARI</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/BANK_NAGARISHP_0.js"></script>
+        <script src="data/TugasQGISHafizAlfarizky2520091_1.js"></script>
+        <script src="data/Centroid_2.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:27, minZoom:2
+        }).fitBounds([[-3.4132390076821455,97.10587565534621],[1.1985111423178534,105.40599995200915]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'feet',
+            secondaryLengthUnit: 'miles',
+            primaryAreaUnit: 'sqfeet',
+            secondaryAreaUnit: 'sqmiles'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            map.setMaxBounds(map.getBounds());
+        }
+        function pop_BANK_NAGARISHP_0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID'] !== null ? autolinker.link(feature.properties['ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kabupaten_'] !== null ? autolinker.link(feature.properties['Kabupaten_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['kode'] !== null ? autolinker.link(feature.properties['kode'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Ibukota'] !== null ? autolinker.link(feature.properties['Ibukota'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Dsr_Hukum'] !== null ? autolinker.link(feature.properties['Dsr_Hukum'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Provinsi'] !== null ? autolinker.link(feature.properties['Provinsi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Bupati_Wal'] !== null ? autolinker.link(feature.properties['Bupati_Wal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Wakil'] !== null ? autolinker.link(feature.properties['Wakil'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Batas_Utar'] !== null ? autolinker.link(feature.properties['Batas_Utar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Batas_Sela'] !== null ? autolinker.link(feature.properties['Batas_Sela'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Batas_Bara'] !== null ? autolinker.link(feature.properties['Batas_Bara'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Batas_Timu'] !== null ? autolinker.link(feature.properties['Batas_Timu'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Lmb_Geo'] !== null ? autolinker.link(feature.properties['Lmb_Geo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_BANK_NAGARISHP_0_0(feature) {
+            switch(String(feature.properties['Kabupaten_'])) {
+                case 'AGAM':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(116,210,130,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'DHARMASRAYA':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(214,86,18,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'KEPULAUAN MENTAWAI':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(61,201,124,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kota BUKIT TINGGI':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(64,206,211,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kota PADANG':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(216,64,56,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kota PADANG PANJANG':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(40,49,213,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kota PARIAMAN':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,207,61,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kota PAYAKUMBUH':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(216,97,163,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kota SAWAHLUNTO':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(124,13,214,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kota SOLOK':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(167,206,51,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'LIMA PULUH KOTO':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(107,236,84,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PADANG PARIAMAN':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(24,90,212,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PASAMAN':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(208,87,117,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PASAMAN BARAT':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(137,215,73,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PESISIR SELATAN':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(42,159,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAWAHLUNTO SIJUNJUNG':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(217,117,234,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SOLOK':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,191,115,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SOLOK SELATAN':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(67,19,210,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'TANAH DATAR':
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(208,42,183,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_BANK_NAGARISHP_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(42,215,172,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_BANK_NAGARISHP_0');
+        map.getPane('pane_BANK_NAGARISHP_0').style.zIndex = 400;
+        map.getPane('pane_BANK_NAGARISHP_0').style['mix-blend-mode'] = 'normal';
+        var layer_BANK_NAGARISHP_0 = new L.geoJson(json_BANK_NAGARISHP_0, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_BANK_NAGARISHP_0',
+            layerName: 'layer_BANK_NAGARISHP_0',
+            pane: 'pane_BANK_NAGARISHP_0',
+            onEachFeature: pop_BANK_NAGARISHP_0,
+            style: style_BANK_NAGARISHP_0_0,
+        });
+        bounds_group.addLayer(layer_BANK_NAGARISHP_0);
+        map.addLayer(layer_BANK_NAGARISHP_0);
+        function pop_TugasQGISHafizAlfarizky2520091_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NO'] !== null ? autolinker.link(feature.properties['NO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID'] !== null ? autolinker.link(feature.properties['ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Rating_Bank'] !== null ? autolinker.link(feature.properties['Rating_Bank'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nama_Bank'] !== null ? autolinker.link(feature.properties['Nama_Bank'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Provinsi'] !== null ? autolinker.link(feature.properties['Provinsi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kab_Kota'] !== null ? autolinker.link(feature.properties['Kab_Kota'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kecamatan'] !== null ? autolinker.link(feature.properties['Kecamatan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kelurahan_Desa'] !== null ? autolinker.link(feature.properties['Kelurahan_Desa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Foto_Tempat'] !== null ? autolinker.link(feature.properties['Foto_Tempat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kontak'] !== null ? autolinker.link(feature.properties['Kontak'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['field_13'] !== null ? autolinker.link(feature.properties['field_13'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_TugasQGISHafizAlfarizky2520091_1_0() {
+            return {
+                pane: 'pane_TugasQGISHafizAlfarizky2520091_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(164,113,88,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_TugasQGISHafizAlfarizky2520091_1');
+        map.getPane('pane_TugasQGISHafizAlfarizky2520091_1').style.zIndex = 401;
+        map.getPane('pane_TugasQGISHafizAlfarizky2520091_1').style['mix-blend-mode'] = 'normal';
+        var layer_TugasQGISHafizAlfarizky2520091_1 = new L.geoJson(json_TugasQGISHafizAlfarizky2520091_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_TugasQGISHafizAlfarizky2520091_1',
+            layerName: 'layer_TugasQGISHafizAlfarizky2520091_1',
+            pane: 'pane_TugasQGISHafizAlfarizky2520091_1',
+            onEachFeature: pop_TugasQGISHafizAlfarizky2520091_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_TugasQGISHafizAlfarizky2520091_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_TugasQGISHafizAlfarizky2520091_1);
+        map.addLayer(layer_TugasQGISHafizAlfarizky2520091_1);
+        function pop_Centroid_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NO'] !== null ? autolinker.link(feature.properties['NO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID'] !== null ? autolinker.link(feature.properties['ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Rating_Ban'] !== null ? autolinker.link(feature.properties['Rating_Ban'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nama_Bank'] !== null ? autolinker.link(feature.properties['Nama_Bank'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Provinsi'] !== null ? autolinker.link(feature.properties['Provinsi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kab_Kota'] !== null ? autolinker.link(feature.properties['Kab_Kota'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kecamatan'] !== null ? autolinker.link(feature.properties['Kecamatan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kelurahan_'] !== null ? autolinker.link(feature.properties['Kelurahan_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Foto_Tempa'] !== null ? autolinker.link(feature.properties['Foto_Tempa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kontak'] !== null ? autolinker.link(feature.properties['Kontak'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['field_13'] !== null ? autolinker.link(feature.properties['field_13'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Centroid_2_0(feature) {
+            if (feature.properties['ID'] >= 1.000000 && feature.properties['ID'] <= 6.000000 ) {
+                return {
+                pane: 'pane_Centroid_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['ID'] >= 6.000000 && feature.properties['ID'] <= 11.000000 ) {
+                return {
+                pane: 'pane_Centroid_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,170,170,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['ID'] >= 11.000000 && feature.properties['ID'] <= 16.000000 ) {
+                return {
+                pane: 'pane_Centroid_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,85,85,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['ID'] >= 16.000000 && feature.properties['ID'] <= 20.000000 ) {
+                return {
+                pane: 'pane_Centroid_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,0,0,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Centroid_2');
+        map.getPane('pane_Centroid_2').style.zIndex = 402;
+        map.getPane('pane_Centroid_2').style['mix-blend-mode'] = 'normal';
+        var layer_Centroid_2 = new L.geoJson(json_Centroid_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Centroid_2',
+            layerName: 'layer_Centroid_2',
+            pane: 'pane_Centroid_2',
+            onEachFeature: pop_Centroid_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Centroid_2_0(feature));
+            },
+        });
+        var cluster_Centroid_2 = new L.MarkerClusterGroup({showCoverageOnHover: false,
+            spiderfyDistanceMultiplier: 2});
+        cluster_Centroid_2.addLayer(layer_Centroid_2);
+
+        bounds_group.addLayer(layer_Centroid_2);
+        cluster_Centroid_2.addTo(map);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Centroid<br /><table><tr><td style="text-align: center;"><img src="legend/Centroid_2_160.png" /></td><td>1 - 6</td></tr><tr><td style="text-align: center;"><img src="legend/Centroid_2_6111.png" /></td><td>6 - 11</td></tr><tr><td style="text-align: center;"><img src="legend/Centroid_2_11162.png" /></td><td>11 - 16</td></tr><tr><td style="text-align: center;"><img src="legend/Centroid_2_16203.png" /></td><td>16 - 20</td></tr></table>': cluster_Centroid_2,'<img src="legend/TugasQGISHafizAlfarizky2520091_1.png" /> Tugas QGIS Hafiz Alfarizky (2520091)': layer_TugasQGISHafizAlfarizky2520091_1,'BANK_NAGARI SHP<br /><table><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_AGAM0.png" /></td><td>AGAM</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_DHARMASRAYA1.png" /></td><td>DHARMASRAYA</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_KEPULAUANMENTAWAI2.png" /></td><td>KEPULAUAN MENTAWAI</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_KotaBUKITTINGGI3.png" /></td><td>Kota BUKIT TINGGI</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_KotaPADANG4.png" /></td><td>Kota PADANG</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_KotaPADANGPANJANG5.png" /></td><td>Kota PADANG PANJANG</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_KotaPARIAMAN6.png" /></td><td>Kota PARIAMAN</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_KotaPAYAKUMBUH7.png" /></td><td>Kota PAYAKUMBUH</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_KotaSAWAHLUNTO8.png" /></td><td>Kota SAWAHLUNTO</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_KotaSOLOK9.png" /></td><td>Kota SOLOK</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_LIMAPULUHKOTO10.png" /></td><td>LIMA PULUH KOTO</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_PADANGPARIAMAN11.png" /></td><td>PADANG PARIAMAN</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_PASAMAN12.png" /></td><td>PASAMAN</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_PASAMANBARAT13.png" /></td><td>PASAMAN BARAT</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_PESISIRSELATAN14.png" /></td><td>PESISIR SELATAN</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_SAWAHLUNTOSIJUNJUNG15.png" /></td><td>SAWAHLUNTO SIJUNJUNG</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_SOLOK16.png" /></td><td>SOLOK</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_SOLOKSELATAN17.png" /></td><td>SOLOK SELATAN</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_TANAHDATAR18.png" /></td><td>TANAH DATAR</td></tr><tr><td style="text-align: center;"><img src="legend/BANK_NAGARISHP_0_19.png" /></td><td></td></tr></table>': layer_BANK_NAGARISHP_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_BANK_NAGARISHP_0.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Kabupaten_'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Kabupaten_']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_BANK_NAGARISHP_0'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        map.addControl(new L.Control.Search({
+            layer: cluster_TugasQGISHafizAlfarizky2520091_1,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'Nama_Bank'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        resetLabels([layer_BANK_NAGARISHP_0]);
+        map.on("zoomend", function(){
+            resetLabels([layer_BANK_NAGARISHP_0]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_BANK_NAGARISHP_0]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_BANK_NAGARISHP_0]);
+        });
+        </script>
+    </body>
+</html>
